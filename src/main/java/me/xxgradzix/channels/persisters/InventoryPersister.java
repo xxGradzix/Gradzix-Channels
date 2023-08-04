@@ -1,4 +1,4 @@
-package me.xxgradzix.channels.serializer;
+package me.xxgradzix.channels.persisters;
 
 import com.j256.ormlite.field.FieldType;
 import com.j256.ormlite.field.SqlType;
@@ -9,14 +9,17 @@ import org.bukkit.inventory.Inventory;
 import java.io.IOException;
 import java.sql.SQLException;
 
-public class InventorySerializer extends StringType {
+public class InventoryPersister extends StringType {
 
-    protected InventorySerializer(SqlType sqlType, Class<?>[] classes) {
-        super(sqlType, classes);
+    private static final InventoryPersister instance = new InventoryPersister();
+
+    public static InventoryPersister getSingleton() {
+        return instance;
     }
 
-    protected InventorySerializer(SqlType sqlType) {
-        super(sqlType);
+
+    protected InventoryPersister() {
+        super(SqlType.STRING, new Class<?>[]{Inventory.class});
     }
 
     @Override

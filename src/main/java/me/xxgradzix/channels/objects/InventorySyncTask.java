@@ -1,7 +1,8 @@
-package me.xxgradzix.channels;
+package me.xxgradzix.channels.objects;
 
+import me.xxgradzix.channels.Channels;
+import me.xxgradzix.channels.PlayerInventoryEntityManager;
 import me.xxgradzix.channels.entities.PlayerInventoryEntity;
-import me.xxgradzix.channels.objects.DatabaseInventoryData;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -13,7 +14,7 @@ public class InventorySyncTask extends BukkitRunnable {
 	private long startTime;
 	private Player p;
 	private boolean inProgress = false;
-	private InventorySyncData syncD; 
+	private InventorySyncData syncD;
 	
 	public InventorySyncTask(Channels channels, long start, Player player, InventorySyncData syncData, PlayerInventoryEntityManager playerInventoryEntityManager) {
 		this.channels = channels;
@@ -21,7 +22,7 @@ public class InventorySyncTask extends BukkitRunnable {
 		this.p = player;
 		this.syncD = syncData;
 
-		this.playerInventoryEntityManager = playerInventoryEntityManager
+		this.playerInventoryEntityManager = playerInventoryEntityManager;
 	}
 
 	@Override
@@ -33,18 +34,18 @@ public class InventorySyncTask extends BukkitRunnable {
 					inProgress = true;
 					PlayerInventoryEntity playerInventoryEntity = playerInventoryEntityManager.getPlayerInventoryEntityById(p.getUniqueId());
 
-					DatabaseInventoryData data = new DatabaseInventoryData(playerInventoryEntity.getInventory(), playerInventoryEntity.getArmor(), playerInventoryEntity.isSynCompleete());
+					DatabaseInventoryData data = new DatabaseInventoryData(playerInventoryEntity.getInventory(), playerInventoryEntity.getArmor(), playerInventoryEntity.getEnderChest(), playerInventoryEntity.isSynCompleete(), playerInventoryEntity.getLastSeen());
 
 					if (data.getSyncStatus()) {
 						channels.getInventoryDataHandler().setPlayerData(p, data, syncD, true);
 						inProgress = false;
 						this.cancel();
 					} else if (System.currentTimeMillis() - Long.parseLong(data.getLastSeen()) >= 600 * 1000) {
-						pd.getInventoryDataHandler().setPlayerData(p, data, syncD, true);
+						channels.getInventoryDataHandler().setPlayerData(p, data, syncD, true);
 						inProgress = false;
 						this.cancel();
 					} else if (System.currentTimeMillis() - startTime >= 22 * 1000) {
-						pd.getInventoryDataHandler().setPlayerData(p, data, syncD, true);
+						channels.getInventoryDataHandler().setPlayerData(p, data, syncD, true);
 						inProgress = false;
 						this.cancel();
 					}
@@ -59,7 +60,4 @@ public class InventorySyncTask extends BukkitRunnable {
 			}
 		}
 	}
-	
-	
-
 }

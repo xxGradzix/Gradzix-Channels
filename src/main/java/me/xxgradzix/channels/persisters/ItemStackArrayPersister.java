@@ -4,29 +4,29 @@ import com.j256.ormlite.field.FieldType;
 import com.j256.ormlite.field.SqlType;
 import com.j256.ormlite.field.types.StringType;
 import me.xxgradzix.channels.InventoryUtils;
-import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
 import java.io.IOException;
 import java.sql.SQLException;
 
-public class InventoryPersister extends StringType {
+public class ItemStackArrayPersister extends StringType {
 
-    private static final InventoryPersister instance = new InventoryPersister();
+    private static final ItemStackArrayPersister instance = new ItemStackArrayPersister();
 
-    public static InventoryPersister getSingleton() {
+    public static ItemStackArrayPersister getSingleton() {
         return instance;
     }
 
 
-    protected InventoryPersister() {
-        super(SqlType.STRING, new Class<?>[]{Inventory.class});
+    protected ItemStackArrayPersister() {
+        super(SqlType.STRING, new Class<?>[]{ItemStack[].class});
     }
 
     @Override
     public Object javaToSqlArg(FieldType fieldType, Object javaObject) throws SQLException {
-        if (javaObject != null && javaObject instanceof Inventory) {
-            Inventory inventory = (Inventory) javaObject;
-            return InventoryUtils.toBase64(inventory);
+        if (javaObject != null && javaObject instanceof ItemStack[]) {
+            ItemStack[] inventory = (ItemStack[]) javaObject;
+            return InventoryUtils.itemStackArrayToBase64(inventory);
         }
         return null;
     }
@@ -36,7 +36,7 @@ public class InventoryPersister extends StringType {
         if (sqlArg != null && sqlArg instanceof String) {
             String jsonString = (String) sqlArg;
             try {
-                return InventoryUtils.fromBase64(jsonString);
+                return InventoryUtils.itemStackArrayFromBase64(jsonString);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

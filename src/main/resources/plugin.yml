@@ -2,3 +2,10 @@ name: Channels
 version: '${project.version}'
 main: me.xxgradzix.channels.Channels
 api-version: '1.17'
+
+depend: [ ProtocolLib ]
+
+database: true
+
+commands:
+  getInventory:
