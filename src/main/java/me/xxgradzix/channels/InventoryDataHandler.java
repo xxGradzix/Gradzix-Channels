@@ -5,6 +5,7 @@ import me.xxgradzix.channels.objects.DatabaseInventoryData;
 import me.xxgradzix.channels.objects.InventorySyncData;
 import me.xxgradzix.channels.objects.InventorySyncTask;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -54,7 +55,7 @@ public class InventoryDataHandler {
         data = null;
     }
 
-    public void onDataSaveFunction(Player p, Boolean dataCleanUp, boolean syncStatus, ItemStack[] inventoryDisconnect, ItemStack[] armorDisconnect, ItemStack[] enderChestDisconnect) {
+    public void onDataSaveFunction(Player p, Boolean dataCleanUp, boolean syncStatus, ItemStack[] inventoryDisconnect, ItemStack[] armorDisconnect, ItemStack[] enderChestDisconnect, Location locationDisconnect) {
         if (playersDisconnectSave.contains(p) == true) {
             return;
         }
@@ -66,6 +67,7 @@ public class InventoryDataHandler {
             ItemStack[] inv = null;
             ItemStack[] armor = null;
             ItemStack[] enderChest = null;
+            Location location = null;
 
             try {
                 if (inventoryDisconnect != null) {
@@ -87,17 +89,7 @@ public class InventoryDataHandler {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-//            try {
-//                if (inventoryDisconnect != null) {
-//                    armor = armorDisconnect;
-//                } else {
-//                    armor = p.getInventory().getArmorContents();
-//                }
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
             try {
-//                if (inventoryDisconnect != null) {
                 if (enderChestDisconnect != null) {
                     enderChest = enderChestDisconnect;
                 } else {
@@ -106,8 +98,18 @@ public class InventoryDataHandler {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            try {
+                if (locationDisconnect != null) {
+                    location = locationDisconnect;
+                } else {
+                    location = p.getLocation();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
-            channels.getPlayerInventoryEntityManager().createOrUpdatePlayerInventoryEntity(new PlayerInventoryEntity(p.getUniqueId(), p.getName(), inv, armor, enderChest, syncStatus, String.valueOf(System.currentTimeMillis())));
+
+            channels.getPlayerInventoryEntityManager().createOrUpdatePlayerInventoryEntity(new PlayerInventoryEntity(p.getUniqueId(), p.getName(), inv, armor, enderChest, location, syncStatus, String.valueOf(System.currentTimeMillis())));
         }
         if (dataCleanUp) {
             dataCleanUp(p);
@@ -129,7 +131,7 @@ public class InventoryDataHandler {
                     PlayerInventoryEntity playerInventoryEntity =channels.getPlayerInventoryEntityManager().getPlayerInventoryEntityById(p.getUniqueId());
 
 //                    DatabaseInventoryData data = pd.getInvMysqlInterface().getData(p);
-                    DatabaseInventoryData data = new DatabaseInventoryData(playerInventoryEntity.getInventory(), playerInventoryEntity.getArmor(), playerInventoryEntity.getEnderChest(), playerInventoryEntity.isSynCompleete(), playerInventoryEntity.getLastSeen());
+                    DatabaseInventoryData data = new DatabaseInventoryData(playerInventoryEntity.getInventory(), playerInventoryEntity.getArmor(), playerInventoryEntity.getEnderChest(), playerInventoryEntity.getLocation(), playerInventoryEntity.isSynCompleete(), playerInventoryEntity.getLastSeen());
 
                     if (data.getSyncStatus()) {
                         setPlayerData(p, data, syncData, false);
@@ -139,7 +141,7 @@ public class InventoryDataHandler {
                     }
                 } else {
                     playersInSync.add(p);
-                    onDataSaveFunction(p, false, false, null, null, null);
+                    onDataSaveFunction(p, false, false, null, null, null, null);
                 }
 
         }
@@ -148,6 +150,7 @@ public class InventoryDataHandler {
         syncData.setBackupInventory(p.getInventory().getContents());
         syncData.setBackupArmor(p.getInventory().getArmorContents());
         syncData.setBackupEnderChest(p.getEnderChest().getContents());
+        syncData.setBackupLocation(p.getLocation());
         p.setItemOnCursor(null);
         p.getInventory().clear();
         p.updateInventory();
@@ -171,6 +174,9 @@ public class InventoryDataHandler {
     public ItemStack[] getEnderChest(Player p) {
         return p.getEnderChest().getContents();
     }
+    public Location getLocation(Player p) {
+        return p.getLocation();
+    }
     private void setInventory(final Player p, DatabaseInventoryData data, InventorySyncData syncData) {
         if (data.getInventory() != null) {
             try {
@@ -178,12 +184,14 @@ public class InventoryDataHandler {
                 // nowe
                 p.getInventory().setArmorContents(data.getArmor());
                 p.getEnderChest().setContents(data.getEnderChest());
+                p.teleport(data.getLocation());
             } catch (Exception e) {
                 e.printStackTrace();
                 if (syncData.getBackupInventory() != null) {
                     p.getInventory().setContents(syncData.getBackupInventory());
                     p.getInventory().setArmorContents(syncData.getBackupArmor());
                     p.getEnderChest().setContents(syncData.getBackupEnderChest());
+                    p.teleport(syncData.getBackupLocation());
                 } else {
 
                 }
@@ -192,6 +200,7 @@ public class InventoryDataHandler {
             p.getInventory().setContents(syncData.getBackupInventory());
             p.getInventory().setArmorContents(syncData.getBackupArmor());
             p.getEnderChest().setContents(syncData.getBackupEnderChest());
+            p.teleport(syncData.getBackupLocation());
         }
         p.updateInventory();
     }

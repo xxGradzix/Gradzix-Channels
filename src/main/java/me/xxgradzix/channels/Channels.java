@@ -3,7 +3,9 @@ package me.xxgradzix.channels;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
+import me.xxgradzix.channels.commands.ChannelsCommand;
 import me.xxgradzix.channels.commands.GetInventoryCommand;
+import me.xxgradzix.channels.config.Config;
 import me.xxgradzix.channels.entities.PlayerInventoryEntity;
 import me.xxgradzix.channels.items.ItemMenager;
 import me.xxgradzix.channels.listeners.OnJoin;
@@ -13,6 +15,7 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public final class Channels extends JavaPlugin {
 
@@ -33,7 +36,6 @@ public final class Channels extends JavaPlugin {
     public Channels() throws SQLException {
 
         ItemMenager.init();
-//        this.playerInventoryEntityManager = new PlayerInventoryEntityManager(connectionSource);
 
         this.connectionSource = new JdbcConnectionSource(databaseUrl, "root", "");
 
@@ -48,7 +50,6 @@ public final class Channels extends JavaPlugin {
     @Override
     public void onEnable() {
 
-//        channels.add(this.getServer());
         System.out.println("plugin v 1");
         inventoryDataHandler = new InventoryDataHandler(this, playerInventoryEntityManager);
 
@@ -56,6 +57,23 @@ public final class Channels extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new OnLeave(playerInventoryEntityManager, this), this);
 
         getCommand("getinventory").setExecutor(new GetInventoryCommand(playerInventoryEntityManager));
+        getCommand("channels").setExecutor(new ChannelsCommand(this));
+
+
+        Config.setup();
+        Config.getCustomFile().options().header("Uwaga kazdy kanal w sieci serwerow musi miec ten sam plugin i ten sam config" +
+                "Lista nazw serwerow (kanalow) ktore maja byc ze soba polaczone");
+
+        Config.getCustomFile().options().copyHeader(true);
+        ArrayList<String> servers = new ArrayList<>();
+        servers.add("sky");
+        servers.add("survival");
+        Config.getCustomFile().addDefault("channels", servers);
+
+        Config.getCustomFile().options().copyDefaults(true);
+
+        Config.save();
+
     }
 
     @Override

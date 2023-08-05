@@ -1,7 +1,8 @@
 package me.xxgradzix.channels.commands;
 
 import me.xxgradzix.channels.PlayerInventoryEntityManager;
-import me.xxgradzix.channels.items.ItemMenager;
+import me.xxgradzix.channels.entities.PlayerInventoryEntity;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -22,25 +23,15 @@ public class GetInventoryCommand implements CommandExecutor {
         Player player = (Player) sender;
 
         UUID uuid = player.getUniqueId();
-
-//        for(Server server : Channels.channels) {
-//            player.sendMessage(server.getName());
-//        }
-
-
-//        ItemStack[] inventory = playerInventoryEntityManager.getPlayerInventoryEntityById(uuid).getInventory();
-        player.getInventory().addItem(ItemMenager.firework);
-//        if(inventory == null) {
-//
-//            player.sendMessage("Invnetory jest null");
-//            return true;
-//        }
-//
-//        for(ItemStack item : inventory) {
-//            if(item == null) continue;
-//
-//            player.getInventory().addItem(item);
-//        }
+        PlayerInventoryEntity playerInventoryEntity = playerInventoryEntityManager.getPlayerInventoryEntityById(uuid);
+        if(playerInventoryEntity != null && playerInventoryEntity.getLocation() != null) {
+            System.out.printf("Nie null");
+            Location location = playerInventoryEntity.getLocation();
+            location.setWorld(player.getWorld());
+            player.teleport(location);
+        } else {
+            System.out.println("NULL");
+        }
         return true;
     }
 }

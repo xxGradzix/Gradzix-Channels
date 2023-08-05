@@ -1,5 +1,6 @@
 package me.xxgradzix.channels.objects;
 
+import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
 
 public class DatabaseInventoryData {
@@ -7,13 +8,15 @@ public class DatabaseInventoryData {
     private ItemStack[] inventory;
     private ItemStack[] armor;
     private ItemStack[] enderChest;
+    private Location location;
     private boolean syncComplete;
     private String lastSeen;
 
-    public DatabaseInventoryData(ItemStack[] inventory, ItemStack[] armor, ItemStack[] enderChest, boolean syncStatus, String lastSeen) {
+    public DatabaseInventoryData(ItemStack[] inventory, ItemStack[] armor, ItemStack[] enderChest, Location location, boolean syncStatus, String lastSeen) {
         this.inventory = inventory;
         this.armor = armor;
         this.enderChest = enderChest;
+        this.location = location;
         this.syncComplete = syncStatus;
         this.lastSeen = lastSeen;
     }
@@ -37,4 +40,7 @@ public class DatabaseInventoryData {
         return enderChest;
     }
 
+    public Location getLocation() {
+        return location;
+    }
 }

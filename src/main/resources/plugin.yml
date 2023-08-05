@@ -9,3 +9,7 @@ database: true
 
 commands:
   getInventory:
+
+  channels:
+    aliases:
+      - ch

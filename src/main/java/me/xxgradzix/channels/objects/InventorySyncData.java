@@ -1,5 +1,6 @@
 package me.xxgradzix.channels.objects;
 
+import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
 
 public class InventorySyncData {
@@ -7,12 +8,15 @@ public class InventorySyncData {
 	private ItemStack[] backupInv;
 	private ItemStack[] backupAr;
 	private ItemStack[] backupEnderChest;
+
+	private Location backupLocation;
 	private Boolean syncComplete;
 	
 	public InventorySyncData() {
 		this.backupInv = null;
 		this.backupAr = null;
 		this.backupEnderChest = null;
+		this.backupLocation = null;
 		this.syncComplete = false;
 	}
 	
@@ -34,7 +38,11 @@ public class InventorySyncData {
 	public ItemStack[] getBackupEnderChest() {
 		return backupEnderChest;
 	}
-	
+
+	public Location getBackupLocation() {
+		return backupLocation;
+	}
+
 	public void setBackupInventory(ItemStack[] backupInventory) {
 		backupInv = backupInventory;
 	}
@@ -46,4 +54,7 @@ public class InventorySyncData {
 		this.backupEnderChest = backupEnderChest;
 	}
 
+    public void setBackupLocation(Location backupLocation) {
+		this.backupLocation = backupLocation;
+    }
 }

@@ -36,7 +36,7 @@ public class BackgroundTask {
 
 				for (Player p : onlinePlayers) {
 					if (p.isOnline() == true) {
-						channels.getInventoryDataHandler().onDataSaveFunction(p, false, false, null, null, null);
+						channels.getInventoryDataHandler().onDataSaveFunction(p, false, false, null, null, null, null);
 					}
 				}
 
@@ -50,7 +50,7 @@ public class BackgroundTask {
 		
 		for (Player p : onlinePlayers) {
 			if (p.isOnline() == true) {
-				channels.getInventoryDataHandler().onDataSaveFunction(p, false, true, null, null, null);
+				channels.getInventoryDataHandler().onDataSaveFunction(p, false, true, null, null, null, null);
 			}
 		}
 	}

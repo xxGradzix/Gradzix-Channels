@@ -3,6 +3,8 @@ package me.xxgradzix.channels.entities;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import me.xxgradzix.channels.persisters.ItemStackArrayPersister;
+import me.xxgradzix.channels.persisters.LocationPersister;
+import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.UUID;
@@ -13,12 +15,13 @@ public class PlayerInventoryEntity {
     public PlayerInventoryEntity() {
     }
 
-    public PlayerInventoryEntity(UUID uuid, String playerName, ItemStack[] inventory, ItemStack[] armor, ItemStack[] enderChest, boolean isSynCompleete, String lastSeen) {
+    public PlayerInventoryEntity(UUID uuid, String playerName, ItemStack[] inventory, ItemStack[] armor, ItemStack[] enderChest, Location location, boolean isSynCompleete, String lastSeen) {
         this.uuid = uuid;
         this.playerName = playerName;
         this.inventory = inventory;
         this.armor = armor;
         this.enderChest = enderChest;
+        this.location = location;
         this.isSynCompleete = isSynCompleete;
         this.lastSeen = lastSeen;
     }
@@ -40,12 +43,19 @@ public class PlayerInventoryEntity {
     @DatabaseField(persisterClass = ItemStackArrayPersister.class, columnDefinition = "LONGBLOB")
     private ItemStack[] enderChest;
 
+    @DatabaseField(persisterClass = LocationPersister.class, columnDefinition = "TEXT")
+//    @DatabaseField
+    private Location location;
+
     @DatabaseField
     private boolean isSynCompleete;
 
     @DatabaseField
     private String lastSeen;
 
+    public Location getLocation() {
+        return location;
+    }
 
     public UUID getUuid() {
         return uuid;

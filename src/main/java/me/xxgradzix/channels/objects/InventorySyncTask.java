@@ -34,7 +34,7 @@ public class InventorySyncTask extends BukkitRunnable {
 					inProgress = true;
 					PlayerInventoryEntity playerInventoryEntity = playerInventoryEntityManager.getPlayerInventoryEntityById(p.getUniqueId());
 
-					DatabaseInventoryData data = new DatabaseInventoryData(playerInventoryEntity.getInventory(), playerInventoryEntity.getArmor(), playerInventoryEntity.getEnderChest(), playerInventoryEntity.isSynCompleete(), playerInventoryEntity.getLastSeen());
+					DatabaseInventoryData data = new DatabaseInventoryData(playerInventoryEntity.getInventory(), playerInventoryEntity.getArmor(), playerInventoryEntity.getEnderChest(), playerInventoryEntity.getLocation(), playerInventoryEntity.isSynCompleete(), playerInventoryEntity.getLastSeen());
 
 					if (data.getSyncStatus()) {
 						channels.getInventoryDataHandler().setPlayerData(p, data, syncD, true);

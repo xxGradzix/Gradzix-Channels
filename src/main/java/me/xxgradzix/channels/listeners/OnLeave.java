@@ -3,6 +3,7 @@ package me.xxgradzix.channels.listeners;
 import me.xxgradzix.channels.Channels;
 import me.xxgradzix.channels.PlayerInventoryEntityManager;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -36,7 +37,8 @@ public class OnLeave implements Listener {
                     ItemStack[] inventory = channels.getInventoryDataHandler().getInventory(p);
                     ItemStack[] armor = channels.getInventoryDataHandler().getArmor(p);
                     ItemStack[] enderChest = channels.getInventoryDataHandler().getEnderChest(p);
-                    channels.getInventoryDataHandler().onDataSaveFunction(p, true, true, inventory, armor, enderChest);
+                    Location location = channels.getInventoryDataHandler().getLocation(p);
+                    channels.getInventoryDataHandler().onDataSaveFunction(p, true, true, inventory, armor, enderChest, location);
                 }
             }
         }, 2L);
