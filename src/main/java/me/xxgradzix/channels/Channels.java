@@ -23,7 +23,6 @@ public final class Channels extends JavaPlugin {
 
     private static InventoryDataHandler inventoryDataHandler;
 
-//    public static ArrayList<Server> channels;
     private String databaseUrl = "jdbc:mysql://localhost:3306/channels";
 
     private ConnectionSource connectionSource;
@@ -50,24 +49,31 @@ public final class Channels extends JavaPlugin {
     @Override
     public void onEnable() {
 
-        System.out.println("plugin v 1");
         inventoryDataHandler = new InventoryDataHandler(this, playerInventoryEntityManager);
 
         getServer().getPluginManager().registerEvents(new OnJoin(playerInventoryEntityManager, this), this);
         getServer().getPluginManager().registerEvents(new OnLeave(playerInventoryEntityManager, this), this);
 
-        getCommand("getinventory").setExecutor(new GetInventoryCommand(playerInventoryEntityManager));
+        getCommand("getinventory").setExecutor(new GetInventoryCommand(playerInventoryEntityManager, this));
         getCommand("channels").setExecutor(new ChannelsCommand(this));
 
+        // kanaly bungee
+
+        getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+        getServer().getMessenger().registerIncomingPluginChannel(this, "BungeeCord", new ChannelsCommand(this));
+
+        getServer().getMessenger().registerOutgoingPluginChannel(this, "myplugin:playercount");
+        getServer().getMessenger().registerIncomingPluginChannel(this, "myplugin:playercount", new ChannelsCommand(this));
 
         Config.setup();
-        Config.getCustomFile().options().header("Uwaga kazdy kanal w sieci serwerow musi miec ten sam plugin i ten sam config" +
-                "Lista nazw serwerow (kanalow) ktore maja byc ze soba polaczone");
+        Config.getCustomFile().options().header("Uwaga kazdy kanal w sieci serwerow musi miec ten sam plugin i ten sam plik konfiguracyjny\n");
+
+//                "Lista nazw serwerow (kanalow) ktore maja byc ze soba polaczone\n" +
+        Config.getCustomFile().options().header("WAZNE, kolejnosc channeli na liscie musi byc taka sama dla kazdego pliku konfiguracyjnego\n");
 
         Config.getCustomFile().options().copyHeader(true);
         ArrayList<String> servers = new ArrayList<>();
-        servers.add("sky");
-        servers.add("survival");
+        servers.add("example");
         Config.getCustomFile().addDefault("channels", servers);
 
         Config.getCustomFile().options().copyDefaults(true);

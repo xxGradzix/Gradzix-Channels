@@ -41,8 +41,8 @@ public class Config {
     }
 
 
-    public static void setServerList(List<String> serverNameList) {
-        getCustomFile().set("channels", serverNameList);
+    public static void setChannelList(List<String> channelsList) {
+        getCustomFile().set("channels", channelsList);
         save();
     }
     public static List<String> getServerNameList() {

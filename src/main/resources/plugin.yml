@@ -7,9 +7,15 @@ depend: [ ProtocolLib ]
 
 database: true
 
+channels:
+  myplugin:playercount:
+    outbound: true
+    inbound: true
+
 commands:
   getInventory:
 
-  channels:
+  channel:
     aliases:
       - ch
+      - channels

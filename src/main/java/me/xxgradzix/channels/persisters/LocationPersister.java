@@ -3,7 +3,7 @@ package me.xxgradzix.channels.persisters;
 import com.j256.ormlite.field.FieldType;
 import com.j256.ormlite.field.SqlType;
 import com.j256.ormlite.field.types.StringType;
-import me.xxgradzix.channels.LocationUtils;
+import me.xxgradzix.channels.utills.LocationUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;

@@ -32,7 +32,6 @@ public class PlayerInventoryEntity {
     @DatabaseField
     private String playerName;
 
-//    @DatabaseField(persisterClass = ItemStackArrayPersister.class, columnDefinition = "BLOB")
     @DatabaseField(persisterClass = ItemStackArrayPersister.class, columnDefinition = "LONGBLOB")
     private ItemStack[] inventory;
 

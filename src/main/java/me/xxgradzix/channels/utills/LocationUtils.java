@@ -1,4 +1,4 @@
-package me.xxgradzix.channels;
+package me.xxgradzix.channels.utills;
 
 import org.bukkit.Location;
 import org.bukkit.util.io.BukkitObjectInputStream;

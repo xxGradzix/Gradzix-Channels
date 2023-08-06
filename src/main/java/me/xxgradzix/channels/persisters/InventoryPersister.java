@@ -3,7 +3,7 @@ package me.xxgradzix.channels.persisters;
 import com.j256.ormlite.field.FieldType;
 import com.j256.ormlite.field.SqlType;
 import com.j256.ormlite.field.types.StringType;
-import me.xxgradzix.channels.InventoryUtils;
+import me.xxgradzix.channels.utills.InventoryUtils;
 import org.bukkit.inventory.Inventory;
 
 import java.io.IOException;

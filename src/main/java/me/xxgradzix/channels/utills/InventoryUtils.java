@@ -1,4 +1,4 @@
-package me.xxgradzix.channels;
+package me.xxgradzix.channels.utills;
 
 import com.comphenix.protocol.utility.StreamSerializer;
 import org.bukkit.Bukkit;
