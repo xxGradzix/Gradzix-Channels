@@ -8,6 +8,8 @@ import me.xxgradzix.channels.commands.GetInventoryCommand;
 import me.xxgradzix.channels.config.Config;
 import me.xxgradzix.channels.entities.PlayerInventoryEntity;
 import me.xxgradzix.channels.items.ItemMenager;
+import me.xxgradzix.channels.listeners.DropItem;
+import me.xxgradzix.channels.listeners.InventoryClick;
 import me.xxgradzix.channels.listeners.OnJoin;
 import me.xxgradzix.channels.listeners.OnLeave;
 import org.bukkit.Bukkit;
@@ -53,6 +55,8 @@ public final class Channels extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new OnJoin(playerInventoryEntityManager, this), this);
         getServer().getPluginManager().registerEvents(new OnLeave(playerInventoryEntityManager, this), this);
+        getServer().getPluginManager().registerEvents(new DropItem(this), this);
+        getServer().getPluginManager().registerEvents(new InventoryClick(this), this);
 
         getCommand("getinventory").setExecutor(new GetInventoryCommand(playerInventoryEntityManager, this));
         getCommand("channels").setExecutor(new ChannelsCommand(this));
