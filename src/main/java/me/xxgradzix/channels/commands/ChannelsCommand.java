@@ -11,6 +11,7 @@ import me.xxgradzix.channels.config.Config;
 import me.xxgradzix.channels.entities.ServerPlayerCountInfo;
 import me.xxgradzix.channels.items.ItemMenager;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -35,15 +36,22 @@ public class ChannelsCommand implements CommandExecutor, PluginMessageListener {
             sender.sendMessage("Only players can use that command");
             return true;
         }
+
+
         Player player = (Player) sender;
+//        System.out.println("test command start - " + player.getName());
+
         requestServerPlayerCount(player);
 
         return true;
     }
     public void chooseChannel(Player player, HashMap<String, ServerPlayerCountInfo> servers, String currentServer) {
-                Gui gui = Gui.gui()
+
+        {
+        Gui gui = Gui.gui()
                 .title(Component.text(ChatColor.GREEN + ChatColor.BOLD.toString() + "CHANNELS " + ChatColor.GRAY + ChatColor.ITALIC + "(/channels)"))
-                .rows(3)
+                .rows(1)
+//                .type(GuiType.HOPPER)
                 .disableAllInteractions()
                 .create();
 
@@ -51,26 +59,29 @@ public class ChannelsCommand implements CommandExecutor, PluginMessageListener {
 
         int slot;
         int slotIncrementation;
-        if(Config.getServerNameList().size() % 4 == 0) {
-            slot = 10;
-            slotIncrementation = 2;
-        } else if (Config.getServerNameList().size() % 3 == 0) {
-            slot = 11;
-            slotIncrementation = 2;
-        } else {
-            slot = 11;
-            slotIncrementation = 4;
-        }
+
+        slot = 2;
+        slotIncrementation= 1;
+//        if (Config.getServerNameList().size() % 4 == 0) {
+//            slot = 10;
+//            slotIncrementation = 2;
+//        } else if (Config.getServerNameList().size() % 3 == 0) {
+//            slot = 11;
+//            slotIncrementation = 2;
+//        } else {
+//            slot = 11;
+//            slotIncrementation = 4;
+//        }
 
         for (String server : Config.getServerNameList()) {
 
             ServerPlayerCountInfo serverPlayerCountInfo = servers.getOrDefault(server, null);
 
-            if(serverPlayerCountInfo == null) continue;
+            if (serverPlayerCountInfo == null) continue;
 
             boolean isCurrent;
 
-            if(server.equalsIgnoreCase(currentServer)) {
+            if (server.equalsIgnoreCase(currentServer)) {
 
                 isCurrent = true;
             } else {
@@ -78,16 +89,86 @@ public class ChannelsCommand implements CommandExecutor, PluginMessageListener {
             }
 
             GuiItem guiItem = ItemBuilder.from(ItemMenager.createServerIcon(serverNum, server, serverPlayerCountInfo.getCount(), serverPlayerCountInfo.isOnline(), isCurrent)).asGuiItem((action) -> {
-                if(!isCurrent) {
-                    connect(player, server);
+                if (!isCurrent) {
+                    if (serverPlayerCountInfo.isOnline()) {
+                        connect(player, server);
+                    } else {
+                        gui.close(player);
+                        player.sendMessage(ChatColor.GRAY + "Kanal " + server + " jest obecnie wyłączony");
+                    }
+
                 }
 
             });
 
+//            gui.addItem(guiItem);
+
             gui.setItem(slot, guiItem);
             slot += slotIncrementation;
         }
+        while (slot < 7) {
+            GuiItem guiItem = ItemBuilder.from(ItemMenager.createServerIcon(serverNum, "serwer nieaktywny", 0, false, false)).asGuiItem((action) -> {
+                gui.close(player);
+                player.sendMessage(ChatColor.GRAY + "Ten kanal jest obecnie nieaktywny");
+            });
+            gui.setItem(slot, guiItem);
+            slot+= slotIncrementation;
+        }
         gui.open(player);
+    }
+//        Gui gui = Gui.gui()
+//                .title(Component.text(ChatColor.GREEN + ChatColor.BOLD.toString() + "CHANNELS " + ChatColor.GRAY + ChatColor.ITALIC + "(/channels)"))
+//                .type(GuiType.HOPPER)
+//                .disableAllInteractions()
+//                .create();
+//
+//        int serverNum = 1;
+//
+//        int slot;
+//        int slotIncrementation;
+//        if (Config.getServerNameList().size() % 5 == 0) {
+//            slot = 0;
+//            slotIncrementation = 1;
+//        } else if (Config.getServerNameList().size() % 4 == 0) {
+//            slot = 0;
+//            slotIncrementation = 1;
+//        } else if (Config.getServerNameList().size() % 3 == 0) {
+//            slot = 0;
+//            slotIncrementation = 2;
+//        } else {
+//            slot = 1;
+//            slotIncrementation = 2;
+//        }
+//
+//        for (String server : Config.getServerNameList()) {
+//
+//            ServerPlayerCountInfo serverPlayerCountInfo = servers.getOrDefault(server, null);
+//
+//            if (serverPlayerCountInfo == null) continue;
+//
+//            boolean isCurrent;
+//
+//            if (server.equalsIgnoreCase(currentServer)) {
+//                isCurrent = true;
+//            } else {
+//                isCurrent = false;
+//            }
+//
+//            GuiItem guiItem = ItemBuilder.from(ItemMenager.createServerIcon(serverNum, server, serverPlayerCountInfo.getCount(), serverPlayerCountInfo.isOnline(), isCurrent)).asGuiItem((action) -> {
+//                player.sendMessage("dupaadad");
+//                if (!isCurrent) {
+//                    if (serverPlayerCountInfo.isOnline()) {
+//                        connect(player, server);
+//                    } else {
+//                        gui.close(player);
+//                        player.sendMessage(ChatColor.GRAY + "Kanal " + server + " jest obecnie wyłączony");
+//                    }
+//                }
+//            });
+//            gui.setItem(slot, guiItem);
+//            slot += slotIncrementation;
+//        }
+//        gui.open(player);
     }
     @Override
     public void onPluginMessageReceived(@NotNull String channel, @NotNull Player player, @NotNull byte[] message) {
@@ -106,11 +187,19 @@ public class ChannelsCommand implements CommandExecutor, PluginMessageListener {
                 for(int i = 0; i< size; i++) {
                     String server = in.readUTF();
                     int serverPlayerCount = in.readInt();
-                    ServerPlayerCountInfo serverPlayerCountInfo = new ServerPlayerCountInfo(server, serverPlayerCount, true);
+
+                    boolean isOnline = in.readBoolean();
+
+//                    if(Config.getOfflineServerList().contains(server)) {
+//                        isOnline = false;
+//                    }
+
+                    ServerPlayerCountInfo serverPlayerCountInfo = new ServerPlayerCountInfo(server, serverPlayerCount, isOnline);
                     servers.put(server, serverPlayerCountInfo);
                 }
                 String currentServer = in.readUTF();
-                chooseChannel(player, servers, currentServer);
+                String playerName = in.readUTF();
+                chooseChannel(Bukkit.getServer().getPlayer(playerName), servers, currentServer);
             }
         }
     }

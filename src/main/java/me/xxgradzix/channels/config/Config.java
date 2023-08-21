@@ -1,11 +1,13 @@
 package me.xxgradzix.channels.config;
 
+import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 public class Config {
@@ -40,13 +42,31 @@ public class Config {
         customFile = YamlConfiguration.loadConfiguration(file);
     }
 
-
     public static void setChannelList(List<String> channelsList) {
         getCustomFile().set("channels", channelsList);
         save();
     }
+
     public static List<String> getServerNameList() {
         return getCustomFile().getStringList("channels");
+    }
+    public static List<String> getOfflineServerList() {
+        return getCustomFile().getStringList("offlineChannels");
+    }
+
+    public static JdbcConnectionSource getConnection() throws SQLException {
+        StringBuilder sb = new StringBuilder();
+        sb.append("jdbc:mysql://");
+        String host = getCustomFile().getString("database.host");
+        sb.append(host);
+        sb.append(":");
+        String port = getCustomFile().getString("database.port");
+        sb.append(port);
+        sb.append("/");
+        String databaseName = getCustomFile().getString("database.databaseName");
+        sb.append(databaseName);
+
+        return new JdbcConnectionSource(sb.toString(), getCustomFile().getString("database.user"), getCustomFile().getString("database.password"));
     }
 
 

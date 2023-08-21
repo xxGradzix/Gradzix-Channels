@@ -31,17 +31,6 @@ public class OnJoin implements Listener {
         UUID uuid = player.getUniqueId();
 
 
-//        Bukkit.getScheduler().runTaskLaterAsynchronously(channels,  new Runnable() {
-//            @Override
-//            public void run() {
-//                if (player != null) {
-//                    if (player.isOnline() == true) {
-//                        channels.getInventoryDataHandler().onJoinFunction(player);
-//                        new SyncCompleteTask(channels, System.currentTimeMillis(), player, playerInventoryEntityManager).runTaskTimerAsynchronously(channels, 5L, 20L);
-//                    }
-//                }
-//            }
-//        }, 5L);
         new BukkitRunnable() {
             @Override
             public void run() {

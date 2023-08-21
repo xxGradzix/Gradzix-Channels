@@ -3,7 +3,7 @@ version: '${project.version}'
 main: me.xxgradzix.channels.Channels
 api-version: '1.17'
 
-depend: [ ProtocolLib ]
+#depend: [ ProtocolLib ]
 
 database: true
 

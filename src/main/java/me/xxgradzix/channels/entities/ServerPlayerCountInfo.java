@@ -9,7 +9,7 @@ public class ServerPlayerCountInfo {
     public ServerPlayerCountInfo(String server, int count, boolean isOnline) {
         this.server = server;
         this.count = count;
-        this.isOnline = true;
+        this.isOnline = isOnline;
     }
 
     public String getServer() {

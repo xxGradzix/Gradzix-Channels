@@ -14,8 +14,13 @@ public class ItemMenager {
     }
 
     public static ItemStack createServerIcon(int channelNum, String serverName, int playerNumber, boolean isOnline, boolean isCurrent) {
-        ItemStack item = new ItemStack(Material.CHEST_MINECART, channelNum);
+        ItemStack item;
 
+        if(isOnline) {
+            item = new ItemStack(Material.GREEN_CONCRETE, channelNum);
+        } else {
+            item = new ItemStack(Material.RED_CONCRETE, channelNum);
+        }
         ItemMeta meta = item.getItemMeta();
 
         if(isOnline) {
