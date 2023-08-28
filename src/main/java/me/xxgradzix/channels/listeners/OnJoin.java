@@ -45,19 +45,5 @@ public class OnJoin implements Listener {
         }.runTaskLater(channels, 5L);
 
 
-//        new BukkitRunnable() {
-//            @Override
-//            public void run() {
-//                PlayerInventoryEntity playerInventoryEntity = playerInventoryEntityManager.getPlayerInventoryEntityById(uuid);
-//                if(playerInventoryEntity != null && playerInventoryEntity.getLocation() != null) {
-//                    System.out.printf("Nie null");
-//                    Location location = playerInventoryEntity.getLocation();
-//                    location.setWorld(player.getWorld());
-//                    player.teleport(location);
-//                } else {
-//                    System.out.println("NULL");
-//                }
-//            }
-//        }.runTaskLater(channels, 20L * 1L );
     }
 }

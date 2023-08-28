@@ -27,8 +27,8 @@ public final class Channels extends JavaPlugin {
 
     private static InventoryDataHandler inventoryDataHandler;
 
-//    private String databaseUrl = "jdbc:mysql://185.16.39.57:3306/s286_database";
-    private String databaseUrl = "jdbc:mysql://localhost:3306/channels";
+    private String databaseUrl = "jdbc:mysql://185.16.39.57:3306/s286_database";
+//    private String databaseUrl = "jdbc:mysql://localhost:3306/channels";
 
     private ConnectionSource connectionSource;
     private static PlayerInventoryEntityManager playerInventoryEntityManager;
@@ -41,8 +41,7 @@ public final class Channels extends JavaPlugin {
 
         ItemMenager.init();
 
-//        this.connectionSource = new JdbcConnectionSource(databaseUrl, "u286_f8T7gXXzU1", "a65qmwbgH8Y@cg3dXm^qgSm6");
-        this.connectionSource = new JdbcConnectionSource(databaseUrl, "root", "");
+        this.connectionSource = new JdbcConnectionSource(databaseUrl, "u286_f8T7gXXzU1", "a65qmwbgH8Y@cg3dXm^qgSm6");
 
 //        this.connectionSource = Config.getConnection();
 
@@ -85,14 +84,17 @@ public final class Channels extends JavaPlugin {
         Config.setup();
 //        Config.getCustomFile().options().header("MySQL Database details\n");
 
-        Config.getCustomFile().addDefault("database.host", "localhost");
-        Config.getCustomFile().addDefault("database.port", 3306);
-        Config.getCustomFile().addDefault("database.databaseName", "channels");
-        Config.getCustomFile().addDefault("database.tableName", "channel_inventories");
+//        Config.getCustomFile().addDefault("database.host", "localhost");
+//        Config.getCustomFile().addDefault("database.port", 3306);
+//        Config.getCustomFile().addDefault("database.databaseName", "channels");
+//        Config.getCustomFile().addDefault("database.tableName", "channel_inventories");
+//        Config.getCustomFile().addDefault("database.user", "root");
+//        Config.getCustomFile().addDefault("database.password", "");
+//        Config.getCustomFile().addDefault("database.sslEnabled", false);
+
+        Config.getCustomFile().addDefault("database.url", "jdbc:mysql://localhost:3306/channels");
         Config.getCustomFile().addDefault("database.user", "root");
         Config.getCustomFile().addDefault("database.password", "");
-        Config.getCustomFile().addDefault("database.sslEnabled", false);
-
 
 //        Config.getCustomFile().options().header("Uwaga kazdy kanal w sieci serwerow musi miec ten sam plugin i ten sam plik konfiguracyjny\n");
 //        Config.getCustomFile().options().header("WAZNE, kolejnosc channeli na liscie musi byc taka sama dla kazdego pliku konfiguracyjnego\n");

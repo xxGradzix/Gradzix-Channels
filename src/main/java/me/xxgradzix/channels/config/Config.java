@@ -55,18 +55,25 @@ public class Config {
     }
 
     public static JdbcConnectionSource getConnection() throws SQLException {
-        StringBuilder sb = new StringBuilder();
-        sb.append("jdbc:mysql://");
-        String host = getCustomFile().getString("database.host");
-        sb.append(host);
-        sb.append(":");
-        String port = getCustomFile().getString("database.port");
-        sb.append(port);
-        sb.append("/");
-        String databaseName = getCustomFile().getString("database.databaseName");
-        sb.append(databaseName);
+//        StringBuilder sb = new StringBuilder();
+//        sb.append("jdbc:mysql://");
+//        String host = getCustomFile().getString("database.host");
+//        sb.append(host);
+//        sb.append(":");
+//        String port = getCustomFile().getString("database.port");
+//        sb.append(port);
+//        sb.append("/");
+//        String databaseName = getCustomFile().getString("database.databaseName");
+//        sb.append(databaseName);
+//
+//        return new JdbcConnectionSource(sb.toString(), getCustomFile().getString("database.user"), getCustomFile().getString("database.password"));
 
-        return new JdbcConnectionSource(sb.toString(), getCustomFile().getString("database.user"), getCustomFile().getString("database.password"));
+        String databaseUrl = getCustomFile().getString("database.url");
+        String user = getCustomFile().getString("database.user");
+        String password = getCustomFile().getString("database.password");
+
+        return new JdbcConnectionSource(databaseUrl, user, password);
+
     }
 
 
