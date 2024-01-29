@@ -23,11 +23,13 @@ import java.util.ArrayList;
 public final class Channels extends JavaPlugin {
 
 
+    public static final String PROPER_REGION_NAME = "channels";
+    public static final String FORBIDDEN_REGION_NAME = "noChannels";
     public static boolean isDisabling = false;
 
     private static InventoryDataHandler inventoryDataHandler;
 
-    private String databaseUrl = "jdbc:mysql://185.16.39.57:3306/s286_database";
+    private String databaseUrl = "jdbc:mysql://185.16.39.57:3306/s373_database";
 //    private String databaseUrl = "jdbc:mysql://localhost:3306/channels";
 
     private ConnectionSource connectionSource;
@@ -41,7 +43,7 @@ public final class Channels extends JavaPlugin {
 
         ItemMenager.init();
 
-        this.connectionSource = new JdbcConnectionSource(databaseUrl, "u286_f8T7gXXzU1", "a65qmwbgH8Y@cg3dXm^qgSm6");
+        this.connectionSource = new JdbcConnectionSource(databaseUrl, "u373_QspyTolB9K", "wOpx=TEr@uFg7t=G4v2yu3nO");
 
 //        this.connectionSource = Config.getConnection();
 
@@ -56,7 +58,7 @@ public final class Channels extends JavaPlugin {
     @Override
     public void onEnable() {
 
-        if (!LocalDate.now().isBefore(LocalDate.of(2023, 8, 30))) {
+        if (!LocalDate.now().isBefore(LocalDate.of(2024, 05, 30))) {
             System.out.println("jezeli wyswietliła sie ta wiadomosc to skontaktuj sie z xxGradzix");
             return;
         }

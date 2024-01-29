@@ -3,6 +3,12 @@ package me.xxgradzix.channels.commands;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldguard.LocalPlayer;
+import com.sk89q.worldguard.WorldGuard;
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldguard.protection.ApplicableRegionSet;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
@@ -13,6 +19,7 @@ import me.xxgradzix.channels.items.ItemMenager;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -21,6 +28,7 @@ import org.bukkit.plugin.messaging.PluginMessageListener;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
+import java.util.stream.Collectors;
 
 public class ChannelsCommand implements CommandExecutor, PluginMessageListener {
 
@@ -90,13 +98,24 @@ public class ChannelsCommand implements CommandExecutor, PluginMessageListener {
 
             GuiItem guiItem = ItemBuilder.from(ItemMenager.createServerIcon(serverNum, server, serverPlayerCountInfo.getCount(), serverPlayerCountInfo.isOnline(), isCurrent)).asGuiItem((action) -> {
                 if (!isCurrent) {
-                    if (serverPlayerCountInfo.isOnline()) {
-                        connect(player, server);
-                    } else {
+                    if(!serverPlayerCountInfo.isOnline()) {
                         gui.close(player);
                         player.sendMessage(ChatColor.GRAY + "Kanal " + server + " jest obecnie wyłączony");
+                        return;
                     }
 
+                    if(!isPlayerInProperRegion(player)) {
+                        gui.close(player);
+                        player.sendMessage(ChatColor.GRAY + "Nie możesz zmienić kanału podczas gdy jesteś w tym regionie");
+                        if(player.isOp()) {
+                            player.sendMessage(ChatColor.GRAY + "Jeśli jesteś adminem to zmień region w którym się znajdujesz");
+                            player.sendMessage("Nazwa regionu dozwolonego to " + Channels.PROPER_REGION_NAME);
+                            player.sendMessage("Nazwa regionu zakazanego to " + Channels.FORBIDDEN_REGION_NAME);
+                        }
+                        return;
+                    }
+
+                    connect(player, server);
                 }
 
             });
@@ -170,6 +189,23 @@ public class ChannelsCommand implements CommandExecutor, PluginMessageListener {
 //        }
 //        gui.open(player);
     }
+
+    private boolean isPlayerInProperRegion(Player player) {
+        Location location = player.getLocation();
+
+        ApplicableRegionSet regionSet = WorldGuard.getInstance().getPlatform().getRegionContainer().createQuery().getApplicableRegions(BukkitAdapter.adapt(location));
+
+        boolean isInForbiddenRegion = regionSet.getRegions().stream().map(ProtectedRegion::getId).collect(Collectors.toSet()).contains(Channels.FORBIDDEN_REGION_NAME);
+
+        boolean isInProperRegion = regionSet.getRegions().stream().map(ProtectedRegion::getId).collect(Collectors.toSet()).contains(Channels.PROPER_REGION_NAME);
+//        for (ProtectedRegion region : regionSet) {
+//            if (region.contains(location.getBlockX(), location.getBlockY(), location.getBlockZ())) {
+//                return region.getId();
+//            }
+//        }
+        return isInProperRegion && !isInForbiddenRegion;
+    }
+
     @Override
     public void onPluginMessageReceived(@NotNull String channel, @NotNull Player player, @NotNull byte[] message) {
 
