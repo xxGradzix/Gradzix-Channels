@@ -4,7 +4,6 @@ import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import me.xxgradzix.channels.commands.ChannelsCommand;
-import me.xxgradzix.channels.commands.GetInventoryCommand;
 import me.xxgradzix.channels.config.Config;
 import me.xxgradzix.channels.entities.PlayerInventoryEntity;
 import me.xxgradzix.channels.items.ItemMenager;
@@ -58,6 +57,12 @@ public final class Channels extends JavaPlugin {
     @Override
     public void onEnable() {
 
+        try {
+            configureDB();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
         if (!LocalDate.now().isBefore(LocalDate.of(2024, 05, 30))) {
             System.out.println("jezeli wyswietliła sie ta wiadomosc to skontaktuj sie z xxGradzix");
             return;
@@ -70,7 +75,6 @@ public final class Channels extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new DropItem(this), this);
         getServer().getPluginManager().registerEvents(new InventoryClick(this), this);
 
-        getCommand("getinventory").setExecutor(new GetInventoryCommand(playerInventoryEntityManager, this));
         getCommand("channels").setExecutor(new ChannelsCommand(this));
 
         // kanaly bungee
@@ -108,12 +112,6 @@ public final class Channels extends JavaPlugin {
         Config.getCustomFile().options().copyDefaults(true);
 
         Config.save();
-
-        try {
-            configureDB();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
 
     }
 

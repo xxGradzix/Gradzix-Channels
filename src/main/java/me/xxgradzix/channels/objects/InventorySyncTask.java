@@ -8,7 +8,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class InventorySyncTask extends BukkitRunnable {
 
-	PlayerInventoryEntityManager playerInventoryEntityManager;
+	private final PlayerInventoryEntityManager playerInventoryEntityManager;
 
 	private Channels channels;
 	private long startTime;
