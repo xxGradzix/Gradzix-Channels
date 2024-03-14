@@ -36,7 +36,10 @@ public class BackgroundTask {
 
 				for (Player p : onlinePlayers) {
 					if (p.isOnline() == true) {
-						channels.getInventoryDataHandler().onDataSaveFunction(p, false, false, null, null, null, null);
+						/**
+						 * changed dataCleanUp to true
+						 */
+						channels.getInventoryDataHandler().onDataSaveFunction(p, true, false, null, null, null, null);
 					}
 				}
 
@@ -45,14 +48,14 @@ public class BackgroundTask {
 		}
 	}
 	
-	public void onShutDownDataSave() {
-		List<Player> onlinePlayers = new ArrayList<Player>(Bukkit.getOnlinePlayers());
-		
-		for (Player p : onlinePlayers) {
-			if (p.isOnline() == true) {
-				channels.getInventoryDataHandler().onDataSaveFunction(p, false, true, null, null, null, null);
-			}
-		}
-	}
+//	public void onShutDownDataSave() {
+//		List<Player> onlinePlayers = new ArrayList<Player>(Bukkit.getOnlinePlayers());
+//
+//		for (Player p : onlinePlayers) {
+//			if (p.isOnline() == true) {
+//				channels.getInventoryDataHandler().onDataSaveFunction(p, false, true, null, null, null, null);
+//			}
+//		}
+//	}
 
 }

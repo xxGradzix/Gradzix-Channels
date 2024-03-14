@@ -14,7 +14,7 @@ import java.util.Set;
 
 public class InventoryDataHandler {
 
-    private PlayerInventoryEntityManager playerInventoryEntityManager;
+    private final PlayerInventoryEntityManager playerInventoryEntityManager;
 
     private Channels channels;
     private Set<Player> playersInSync = new HashSet<>();
@@ -107,8 +107,6 @@ public class InventoryDataHandler {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
-
             channels.getPlayerInventoryEntityManager().createOrUpdatePlayerInventoryEntity(new PlayerInventoryEntity(p.getUniqueId(), p.getName(), inv, armor, enderChest, location, syncStatus, String.valueOf(System.currentTimeMillis())));
         }
         if (dataCleanUp) {
@@ -141,7 +139,10 @@ public class InventoryDataHandler {
                     }
                 } else {
                     playersInSync.add(p);
-                    onDataSaveFunction(p, false, false, null, null, null, null);
+                    /**
+                     * changed sync status to true
+                     */
+                    onDataSaveFunction(p, true, false, null, null, null, null);
                 }
 
         }

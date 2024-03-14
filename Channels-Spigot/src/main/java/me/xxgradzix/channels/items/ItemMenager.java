@@ -16,30 +16,38 @@ public class ItemMenager {
     public static ItemStack createServerIcon(int channelNum, String serverName, int playerNumber, boolean isOnline, boolean isCurrent) {
         ItemStack item;
 
-        if(isOnline) {
-            item = new ItemStack(Material.GREEN_CONCRETE, channelNum);
+        if(isCurrent) {
+            item = new ItemStack(Material.ORANGE_WOOL, 1);
         } else {
-            item = new ItemStack(Material.RED_CONCRETE, channelNum);
+            if(isOnline) {
+                item = new ItemStack(Material.LIME_WOOL, 1);
+            } else {
+                item = new ItemStack(Material.RED_WOOL, 1);
+            }
         }
         ItemMeta meta = item.getItemMeta();
 
-        if(isOnline) {
-            meta.setDisplayName(ChatColor.GRAY + "Kanał: " + ChatColor.GREEN + serverName);
-        } else {
-            meta.setDisplayName(ChatColor.GRAY + "Kanał: " + ChatColor.RED + serverName);
-        }
+        meta.setDisplayName(ChatColor.GRAY + "Kanał: " + ChatColor.WHITE + serverName);
+//        if(isOnline) {
+//            meta.setDisplayName(ChatColor.GRAY + "Kanał: " + ChatColor.GREEN + serverName);
+//        } else {
+//            meta.setDisplayName(ChatColor.GRAY + "Kanał: " + ChatColor.RED + serverName);
+//        }
 
         ArrayList<String> lore = new ArrayList<>();
 
-        lore.add(ChatColor.GRAY + "Ilość graczy: " + playerNumber);
+        lore.add(" ");
+        lore.add(ChatColor.DARK_GRAY + "» " + ChatColor.GRAY + "Online: " + ChatColor.DARK_GREEN + playerNumber);
+        lore.add(ChatColor.DARK_GRAY + "» " + ChatColor.GRAY + "TPS: " + ChatColor.DARK_GREEN + (isOnline ? "20" : "0"));
+        lore.add(" ");
 
         if(isCurrent) {
-            lore.add(ChatColor.GRAY + "Aktualnie znajdujesz sie na tym kanale");
+            lore.add(ChatColor.DARK_GRAY + "» " + ChatColor.GOLD + "Znajdujesz obecnie się na tym sektorze");
         } else {
             if(isOnline) {
-                lore.add(ChatColor.GRAY + "Ten serwer jest: " + ChatColor.GREEN + "ONLINE");
+                lore.add(ChatColor.DARK_GRAY + "» " + ChatColor.GREEN + "Kliknij aby przejść na ten sektor");
             } else {
-                lore.add(ChatColor.GRAY + "Ten serwer jest: " + ChatColor.RED + "OFFLINE");
+                lore.add(ChatColor.DARK_GRAY + "» " + ChatColor.RED + "Sektor jest wyłączony");
             }
         }
 
