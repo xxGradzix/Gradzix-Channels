@@ -1,7 +1,7 @@
 package me.xxgradzix.channels.listeners;
 
 import me.xxgradzix.channels.Channels;
-import me.xxgradzix.channels.PlayerInventoryEntityManager;
+import me.xxgradzix.channels.database.managers.PlayerInventoryEntityManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;

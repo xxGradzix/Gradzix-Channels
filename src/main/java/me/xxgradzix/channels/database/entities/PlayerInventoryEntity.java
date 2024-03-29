@@ -1,4 +1,4 @@
-package me.xxgradzix.channels.entities;
+package me.xxgradzix.channels.database.entities;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;

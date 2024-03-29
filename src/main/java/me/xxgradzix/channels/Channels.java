@@ -5,7 +5,8 @@ import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import me.xxgradzix.channels.commands.ChannelsCommand;
 import me.xxgradzix.channels.config.Config;
-import me.xxgradzix.channels.entities.PlayerInventoryEntity;
+import me.xxgradzix.channels.database.entities.PlayerInventoryEntity;
+import me.xxgradzix.channels.database.managers.PlayerInventoryEntityManager;
 import me.xxgradzix.channels.items.ItemMenager;
 import me.xxgradzix.channels.listeners.DropItem;
 import me.xxgradzix.channels.listeners.InventoryClick;
@@ -28,8 +29,8 @@ public final class Channels extends JavaPlugin {
 
     private static InventoryDataHandler inventoryDataHandler;
 
-    private String databaseUrl = "jdbc:mysql://185.16.39.57:3306/s373_database";
-//    private String databaseUrl = "jdbc:mysql://localhost:3306/channels";
+    private String databaseUrl = "jdbc:mysql://185.16.39.57:3306/s415_database?autoReconnect=true";
+//    private String databaseUrl = "jdbc:mysql://localhost:3306/channels?autoReconnect=true";
 
     private ConnectionSource connectionSource;
     private static PlayerInventoryEntityManager playerInventoryEntityManager;
@@ -42,7 +43,7 @@ public final class Channels extends JavaPlugin {
 
         ItemMenager.init();
 
-        this.connectionSource = new JdbcConnectionSource(databaseUrl, "u373_QspyTolB9K", "wOpx=TEr@uFg7t=G4v2yu3nO");
+        this.connectionSource = new JdbcConnectionSource(databaseUrl, "u415_1QAFvl3jp0", "+LhVZHAu7GtV.dvcgLDd8@+K");
 
 //        this.connectionSource = Config.getConnection();
 
@@ -98,12 +99,9 @@ public final class Channels extends JavaPlugin {
 //        Config.getCustomFile().addDefault("database.password", "");
 //        Config.getCustomFile().addDefault("database.sslEnabled", false);
 
-        Config.getCustomFile().addDefault("database.url", "jdbc:mysql://localhost:3306/channels");
-        Config.getCustomFile().addDefault("database.user", "root");
-        Config.getCustomFile().addDefault("database.password", "");
-
-//        Config.getCustomFile().options().header("Uwaga kazdy kanal w sieci serwerow musi miec ten sam plugin i ten sam plik konfiguracyjny\n");
-//        Config.getCustomFile().options().header("WAZNE, kolejnosc channeli na liscie musi byc taka sama dla kazdego pliku konfiguracyjnego\n");
+//        Config.getCustomFile().addDefault("database.url", "jdbc:mysql://localhost:3306/channels");
+//        Config.getCustomFile().addDefault("database.user", "root");
+//        Config.getCustomFile().addDefault("database.password", "");
 
         ArrayList<String> servers = new ArrayList<>();
         servers.add("example");
@@ -121,6 +119,26 @@ public final class Channels extends JavaPlugin {
         isDisabling = true;
         Bukkit.getScheduler().cancelTasks(this);
         HandlerList.unregisterAll(this);
-
+//        for (Player player : Bukkit.getOnlinePlayers()) {
+//            try {
+//                // Save inventory
+//                ItemStack[] inventory = inventoryDataHandler.getInventory(player);
+////                playerInventoryEntityManager.saveInventory(player, inventory);
+//
+//                // Save armor
+//                ItemStack[] armor = inventoryDataHandler.getArmor(player);
+//                playerInventoryEntityManager.saveArmor(player, armor);
+//
+//                // Save ender chest
+//                ItemStack[] enderChest = inventoryDataHandler.getEnderChest(player);
+//                playerInventoryEntityManager.saveEnderChest(player, enderChest);
+//
+//                // Save location
+//                Location location = inventoryDataHandler.getLocation(player);
+//                playerInventoryEntityManager.saveLocation(player, location);
+//            } catch (SQLException e) {
+//                e.printStackTrace();
+//            }
+//        }
     }
 }
