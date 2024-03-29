@@ -1,6 +1,7 @@
 package me.xxgradzix.channels;
 
-import me.xxgradzix.channels.entities.PlayerInventoryEntity;
+import me.xxgradzix.channels.database.entities.PlayerInventoryEntity;
+import me.xxgradzix.channels.database.managers.PlayerInventoryEntityManager;
 import me.xxgradzix.channels.objects.DatabaseInventoryData;
 import me.xxgradzix.channels.objects.InventorySyncData;
 import me.xxgradzix.channels.objects.InventorySyncTask;
@@ -142,7 +143,8 @@ public class InventoryDataHandler {
                     /**
                      * changed sync status to true
                      */
-                    onDataSaveFunction(p, true, false, null, null, null, null);
+//                    onDataSaveFunction(p, true, false, null, null, null, null);
+                    onDataSaveFunction(p, false, true, null, null, null, null);
                 }
 
         }

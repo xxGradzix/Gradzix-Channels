@@ -1,8 +1,8 @@
 package me.xxgradzix.channels.objects;
 
 import me.xxgradzix.channels.Channels;
-import me.xxgradzix.channels.PlayerInventoryEntityManager;
-import me.xxgradzix.channels.entities.PlayerInventoryEntity;
+import me.xxgradzix.channels.database.managers.PlayerInventoryEntityManager;
+import me.xxgradzix.channels.database.entities.PlayerInventoryEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 

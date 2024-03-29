@@ -1,9 +1,9 @@
-package me.xxgradzix.channels;
+package me.xxgradzix.channels.database.managers;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.support.ConnectionSource;
-import me.xxgradzix.channels.entities.PlayerInventoryEntity;
+import me.xxgradzix.channels.database.entities.PlayerInventoryEntity;
 import org.bukkit.entity.Player;
 
 import java.sql.SQLException;

@@ -17,6 +17,7 @@ public class InventoryClick implements Listener {
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent event) {
 		Player p = (Player) event.getWhoClicked();
+//		if (channels.getInventoryDataHandler().isSyncComplete(p) == true) {
 		if (channels.getInventoryDataHandler().isSyncComplete(p) == false) {
 			event.setCancelled(true);
 		}
