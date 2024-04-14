@@ -23,14 +23,11 @@ import java.util.ArrayList;
 public final class Channels extends JavaPlugin {
 
 
-    public static final String PROPER_REGION_NAME = "channels";
-    public static final String FORBIDDEN_REGION_NAME = "noChannels";
+    public static final String PROPER_REGION_NAME = "allowChannels";
+    public static final String FORBIDDEN_REGION_NAME = "disallowChannels";
     public static boolean isDisabling = false;
 
     private static InventoryDataHandler inventoryDataHandler;
-
-    private String databaseUrl = "jdbc:mysql://185.16.39.57:3306/s415_database?autoReconnect=true";
-//    private String databaseUrl = "jdbc:mysql://localhost:3306/channels?autoReconnect=true";
 
     private ConnectionSource connectionSource;
     private static PlayerInventoryEntityManager playerInventoryEntityManager;
@@ -42,13 +39,8 @@ public final class Channels extends JavaPlugin {
     public void configureDB() throws SQLException {
 
         ItemMenager.init();
-
-        this.connectionSource = new JdbcConnectionSource(databaseUrl, "u415_1QAFvl3jp0", "+LhVZHAu7GtV.dvcgLDd8@+K");
-
-//        this.connectionSource = Config.getConnection();
-
+        this.connectionSource = Config.getConnection();
         TableUtils.createTableIfNotExists(connectionSource, PlayerInventoryEntity.class);
-
         this.playerInventoryEntityManager = new PlayerInventoryEntityManager(connectionSource);
     }
 
@@ -57,17 +49,6 @@ public final class Channels extends JavaPlugin {
     }
     @Override
     public void onEnable() {
-
-        try {
-            configureDB();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        if (!LocalDate.now().isBefore(LocalDate.of(2024, 05, 30))) {
-            System.out.println("jezeli wyswietliła sie ta wiadomosc to skontaktuj sie z xxGradzix");
-            return;
-        }
 
         inventoryDataHandler = new InventoryDataHandler(this, playerInventoryEntityManager);
 
@@ -89,19 +70,10 @@ public final class Channels extends JavaPlugin {
         // config
 
         Config.setup();
-//        Config.getCustomFile().options().header("MySQL Database details\n");
 
-//        Config.getCustomFile().addDefault("database.host", "localhost");
-//        Config.getCustomFile().addDefault("database.port", 3306);
-//        Config.getCustomFile().addDefault("database.databaseName", "channels");
-//        Config.getCustomFile().addDefault("database.tableName", "channel_inventories");
-//        Config.getCustomFile().addDefault("database.user", "root");
-//        Config.getCustomFile().addDefault("database.password", "");
-//        Config.getCustomFile().addDefault("database.sslEnabled", false);
-
-//        Config.getCustomFile().addDefault("database.url", "jdbc:mysql://localhost:3306/channels");
-//        Config.getCustomFile().addDefault("database.user", "root");
-//        Config.getCustomFile().addDefault("database.password", "");
+        Config.getCustomFile().addDefault("database.url", "jdbc:mysql://localhost:3306/channels");
+        Config.getCustomFile().addDefault("database.user", "root");
+        Config.getCustomFile().addDefault("database.password", "");
 
         ArrayList<String> servers = new ArrayList<>();
         servers.add("example");
@@ -111,6 +83,12 @@ public final class Channels extends JavaPlugin {
 
         Config.save();
 
+        try {
+            configureDB();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     @Override
@@ -119,26 +97,6 @@ public final class Channels extends JavaPlugin {
         isDisabling = true;
         Bukkit.getScheduler().cancelTasks(this);
         HandlerList.unregisterAll(this);
-//        for (Player player : Bukkit.getOnlinePlayers()) {
-//            try {
-//                // Save inventory
-//                ItemStack[] inventory = inventoryDataHandler.getInventory(player);
-////                playerInventoryEntityManager.saveInventory(player, inventory);
-//
-//                // Save armor
-//                ItemStack[] armor = inventoryDataHandler.getArmor(player);
-//                playerInventoryEntityManager.saveArmor(player, armor);
-//
-//                // Save ender chest
-//                ItemStack[] enderChest = inventoryDataHandler.getEnderChest(player);
-//                playerInventoryEntityManager.saveEnderChest(player, enderChest);
-//
-//                // Save location
-//                Location location = inventoryDataHandler.getLocation(player);
-//                playerInventoryEntityManager.saveLocation(player, location);
-//            } catch (SQLException e) {
-//                e.printStackTrace();
-//            }
-//        }
+
     }
 }
