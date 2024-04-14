@@ -47,7 +47,6 @@ public class ChannelsCommand implements CommandExecutor, PluginMessageListener {
 
 
         Player player = (Player) sender;
-//        System.out.println("test command start - " + player.getName());
 
         requestServerPlayerCount(player);
 
@@ -59,7 +58,6 @@ public class ChannelsCommand implements CommandExecutor, PluginMessageListener {
         Gui gui = Gui.gui()
                 .title(Component.text(ChatColor.GREEN + ChatColor.BOLD.toString() + "CHANNELS " + ChatColor.GRAY + ChatColor.ITALIC + "(/channels)"))
                 .rows(1)
-//                .type(GuiType.HOPPER)
                 .disableAllInteractions()
                 .create();
 
@@ -70,16 +68,6 @@ public class ChannelsCommand implements CommandExecutor, PluginMessageListener {
 
         slot = 2;
         slotIncrementation= 1;
-//        if (Config.getServerNameList().size() % 4 == 0) {
-//            slot = 10;
-//            slotIncrementation = 2;
-//        } else if (Config.getServerNameList().size() % 3 == 0) {
-//            slot = 11;
-//            slotIncrementation = 2;
-//        } else {
-//            slot = 11;
-//            slotIncrementation = 4;
-//        }
 
         for (String server : Config.getServerNameList()) {
 
@@ -120,8 +108,6 @@ public class ChannelsCommand implements CommandExecutor, PluginMessageListener {
 
             });
 
-//            gui.addItem(guiItem);
-
             gui.setItem(slot, guiItem);
             slot += slotIncrementation;
         }
@@ -135,59 +121,6 @@ public class ChannelsCommand implements CommandExecutor, PluginMessageListener {
         }
         gui.open(player);
     }
-//        Gui gui = Gui.gui()
-//                .title(Component.text(ChatColor.GREEN + ChatColor.BOLD.toString() + "CHANNELS " + ChatColor.GRAY + ChatColor.ITALIC + "(/channels)"))
-//                .type(GuiType.HOPPER)
-//                .disableAllInteractions()
-//                .create();
-//
-//        int serverNum = 1;
-//
-//        int slot;
-//        int slotIncrementation;
-//        if (Config.getServerNameList().size() % 5 == 0) {
-//            slot = 0;
-//            slotIncrementation = 1;
-//        } else if (Config.getServerNameList().size() % 4 == 0) {
-//            slot = 0;
-//            slotIncrementation = 1;
-//        } else if (Config.getServerNameList().size() % 3 == 0) {
-//            slot = 0;
-//            slotIncrementation = 2;
-//        } else {
-//            slot = 1;
-//            slotIncrementation = 2;
-//        }
-//
-//        for (String server : Config.getServerNameList()) {
-//
-//            ServerPlayerCountInfo serverPlayerCountInfo = servers.getOrDefault(server, null);
-//
-//            if (serverPlayerCountInfo == null) continue;
-//
-//            boolean isCurrent;
-//
-//            if (server.equalsIgnoreCase(currentServer)) {
-//                isCurrent = true;
-//            } else {
-//                isCurrent = false;
-//            }
-//
-//            GuiItem guiItem = ItemBuilder.from(ItemMenager.createServerIcon(serverNum, server, serverPlayerCountInfo.getCount(), serverPlayerCountInfo.isOnline(), isCurrent)).asGuiItem((action) -> {
-//                player.sendMessage("dupaadad");
-//                if (!isCurrent) {
-//                    if (serverPlayerCountInfo.isOnline()) {
-//                        connect(player, server);
-//                    } else {
-//                        gui.close(player);
-//                        player.sendMessage(ChatColor.GRAY + "Kanal " + server + " jest obecnie wyłączony");
-//                    }
-//                }
-//            });
-//            gui.setItem(slot, guiItem);
-//            slot += slotIncrementation;
-//        }
-//        gui.open(player);
     }
 
     private boolean isPlayerInProperRegion(Player player) {
@@ -198,11 +131,7 @@ public class ChannelsCommand implements CommandExecutor, PluginMessageListener {
         boolean isInForbiddenRegion = regionSet.getRegions().stream().map(ProtectedRegion::getId).collect(Collectors.toSet()).contains(Channels.FORBIDDEN_REGION_NAME);
 
         boolean isInProperRegion = regionSet.getRegions().stream().map(ProtectedRegion::getId).collect(Collectors.toSet()).contains(Channels.PROPER_REGION_NAME);
-//        for (ProtectedRegion region : regionSet) {
-//            if (region.contains(location.getBlockX(), location.getBlockY(), location.getBlockZ())) {
-//                return region.getId();
-//            }
-//        }
+
         return isInProperRegion && !isInForbiddenRegion;
     }
 
@@ -225,10 +154,6 @@ public class ChannelsCommand implements CommandExecutor, PluginMessageListener {
                     int serverPlayerCount = in.readInt();
 
                     boolean isOnline = in.readBoolean();
-
-//                    if(Config.getOfflineServerList().contains(server)) {
-//                        isOnline = false;
-//                    }
 
                     ServerPlayerCountInfo serverPlayerCountInfo = new ServerPlayerCountInfo(server, serverPlayerCount, isOnline);
                     servers.put(server, serverPlayerCountInfo);

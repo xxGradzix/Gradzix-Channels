@@ -39,7 +39,7 @@
                         </goals>
                         <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <outputFile>C:\Users\kuba\Desktop\serwery\BoxPvp_1\plugins\Channels.jar</outputFile>
+<!--                            <outputFile>C:\Users\kuba\Desktop\serwery\BoxPvp_1\plugins\Channels.jar</outputFile>-->
                         </configuration>
                     </execution>
                 </executions>
@@ -68,7 +68,7 @@
         </plugins>
         <resources>
             <resource>
-                <directory>src/main/resources</directory>
+                <directory>../src/main/resources</directory>
                 <filtering>true</filtering>
             </resource>
         </resources>

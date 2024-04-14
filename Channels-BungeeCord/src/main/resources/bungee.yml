@@ -1,0 +1,7 @@
+name: Channels-Bungee
+version: '${project.version}'
+main: me.xxgradzix.channelsbungee.Channels_Bungee
+
+channels:
+  - myplugin:playercount
+  - myplugin:joinPlayer
